@@ -14,6 +14,7 @@ from sklearn.metrics import (
     roc_auc_score,
     classification_report,
 )
+from sklearn.metrics import average_precision_score
 
 from xgboost import XGBClassifier
 
@@ -73,18 +74,19 @@ X_train_processed = preprocessor.fit_transform(X_train)
 X_test_processed = preprocessor.transform(X_test)
 
 
-
 model = XGBClassifier(
-    n_estimators=300,
-    max_depth=5,
-    learning_rate=0.05,
-    subsample=0.8,
-    colsample_bytree=0.8,
+    n_estimators=500,
+    max_depth=4,
+    learning_rate=0.03,
+    min_child_weight=3,
+    subsample=0.85,
+    colsample_bytree=0.85,
+    reg_alpha=0.1,
+    reg_lambda=1.0,
     objective="binary:logistic",
     eval_metric="logloss",
     random_state=42,
 )
-
 
 
 model.fit(
@@ -125,6 +127,10 @@ roc_auc = roc_auc_score(
     y_probability,
 )
 
+average_precision = average_precision_score(
+    y_test,
+    y_probability,
+)
 
 print("\n========== MODEL PERFORMANCE ==========\n")
 
@@ -133,6 +139,7 @@ print(f"Precision : {precision:.4f}")
 print(f"Recall    : {recall:.4f}")
 print(f"F1 Score  : {f1:.4f}")
 print(f"ROC-AUC   : {roc_auc:.4f}")
+print(f"PR-AUC     : {average_precision:.4f}")
 
 print("\nClassification Report:\n")
 

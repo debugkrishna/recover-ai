@@ -55,30 +55,36 @@ data = pd.DataFrame({
 
 
 score = (
-    2.5 * data["previous_payment_success_rate"]
-    - 0.25 * data["previous_failed_payments"]
-    - 0.01 * data["days_since_last_payment"]
-    + 0.15 * data["previous_recovery_count"]
-    + 0.01 * data["customer_tenure_months"]
+    2.8 * (data["previous_payment_success_rate"] - 0.70)
+    - 0.35 * data["previous_failed_payments"]
+    - 0.018 * data["days_since_last_payment"]
+    + 0.20 * data["previous_recovery_count"]
+    + 0.015 * data["customer_tenure_months"]
 )
 
+
 score += data["failure_reason"].map({
-    "insufficient_funds": -0.20,
-    "card_declined": -0.40,
-    "network_error": 0.30,
-    "expired_card": -0.50,
-    "bank_error": 0.10
+    "insufficient_funds": -0.35,
+    "card_declined": -0.60,
+    "network_error": 0.45,
+    "expired_card": -0.80,
+    "bank_error": 0.15
 })
 
+score -= 0.00003 * data["payment_amount"]
 
-score += np.random.normal(0, 0.5, N)
 
+score += 0.00001 * data["customer_lifetime_value"]
+
+score += np.random.normal(0, 0.45, N)
 
 probability = 1 / (1 + np.exp(-score))
 
-data["recovered"] = np.random.binomial(1, probability)
 
-
+data["recovered"] = np.random.binomial(
+    1,
+    probability
+)
 
 data.to_csv("data/payments.csv", index=False)
 
