@@ -1,5 +1,22 @@
 <div align="center">
 
+# 💳 RecoverAI
+
+### AI-Powered Payment Revenue Recovery System
+
+**Predict failed-payment recovery probability → investigate context → take controlled recovery actions → maintain an audit trail.**
+
+<p>
+  <img src="https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/XGBoost-ML-189AB4" alt="XGBoost">
+  <img src="https://img.shields.io/badge/FastAPI-API-009688?logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/OpenAI-Agent-412991?logo=openai&logoColor=white" alt="OpenAI">
+  <img src="https://img.shields.io/badge/Streamlit-UI-FF4B4B?logo=streamlit&logoColor=white" alt="Streamlit">
+  <img src="https://img.shields.io/badge/SQLite-Database-003B57?logo=sqlite&logoColor=white" alt="SQLite">
+</p>
+
+</div>
+
 ---
 
 ## 🚀 What is RecoverAI?
@@ -206,14 +223,14 @@ Recovery Level:       medium_recovery
 
 Current evaluation:
 
-| Metric    |            Score |
-| :-------- | ---------------: |
-| Accuracy  | **69.50%** |
+| Metric | Score |
+|:---|---:|
+| Accuracy | **69.50%** |
 | Precision | **55.26%** |
-| Recall    | **35.32%** |
-| F1 Score  | **43.10%** |
-| ROC-AUC   | **70.59%** |
-| PR-AUC    | **51.65%** |
+| Recall | **35.32%** |
+| F1 Score | **43.10%** |
+| ROC-AUC | **70.59%** |
+| PR-AUC | **51.65%** |
 
 > Accuracy is not treated as the only metric because recovery prediction is a business decision problem involving class imbalance and different costs for false positives and false negatives.
 
@@ -325,18 +342,18 @@ the appropriate recovery workflow while keeping actions controlled
 and auditable.
 
 ![AI Recovery Agent](docs/agent-workflow.png)
-
 ---
+
 ## 🧩 Tech Stack
 
-| Layer                      | Technologies                                            |
-| :------------------------- | :------------------------------------------------------ |
-| **Frontend**         | Streamlit                                               |
-| **Backend**          | Python, FastAPI, Pydantic                               |
-| **Machine Learning** | Scikit-learn, XGBoost, Pandas, NumPy, Joblib            |
-| **AI**               | OpenAI API, OpenAI Responses API, Function/Tool Calling |
-| **Database**         | SQLite                                                  |
-| **Development**      | Git, GitHub, Python virtual environment                 |
+| Layer | Technologies |
+|:---|:---|
+| **Frontend** | Streamlit |
+| **Backend** | Python, FastAPI, Pydantic |
+| **Machine Learning** | Scikit-learn, XGBoost, Pandas, NumPy, Joblib |
+| **AI** | OpenAI API, OpenAI Responses API, Function/Tool Calling |
+| **Database** | SQLite |
+| **Development** | Git, GitHub, Python virtual environment |
 
 ---
 
@@ -619,3 +636,9 @@ It demonstrates how a predictive model can be embedded inside an agentic workflo
 ---
 
 <div align="center">
+
+### Built to explore AI-powered revenue recovery.
+
+⭐ If you find RecoverAI interesting, consider starring the repository.
+
+</div>
