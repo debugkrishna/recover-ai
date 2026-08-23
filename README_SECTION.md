@@ -2,8 +2,10 @@
 
 ### Payment analysis dashboard
 
-![RecoverAI Dashboard](screenshots/dashboard-overview.png)
+![RecoverAI Audit Trail](screenshots/audit-trail.png)
 
 ### Recovery audit trail
 
-![RecoverAI Audit Trail](screenshots/audit-trail.png)
+
+
+![RecoverAI Dashboard](screenshots/dashboard-overview.png)
