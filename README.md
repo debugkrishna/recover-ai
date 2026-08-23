@@ -1,12 +1,44 @@
-# RecoverAI 💳
+<div align="center">
 
-> AI-powered payment revenue recovery system using machine learning, agentic AI, FastAPI, Streamlit, and SQLite.
+# 💳 RecoverAI
 
-RecoverAI analyzes failed payments, predicts the probability of successful recovery, and uses an AI agent to investigate the payment, choose appropriate recovery actions, execute approved tools, and maintain an audit trail.
+### AI-Powered Payment Revenue Recovery System
 
-## 🎯 Problem
+**Predict failed-payment recovery probability → investigate context → take controlled recovery actions → maintain an audit trail.**
 
-Failed payments cause revenue leakage for subscription and payment businesses.
+<p>
+  <img src="https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/XGBoost-ML-189AB4" alt="XGBoost">
+  <img src="https://img.shields.io/badge/FastAPI-API-009688?logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/OpenAI-Agent-412991?logo=openai&logoColor=white" alt="OpenAI">
+  <img src="https://img.shields.io/badge/Streamlit-UI-FF4B4B?logo=streamlit&logoColor=white" alt="Streamlit">
+  <img src="https://img.shields.io/badge/SQLite-Database-003B57?logo=sqlite&logoColor=white" alt="SQLite">
+</p>
+
+</div>
+
+---
+
+## 🚀 What is RecoverAI?
+
+RecoverAI is an end-to-end AI system for **payment revenue recovery**.
+
+When a payment fails, the system:
+
+1. Retrieves payment and customer context.
+2. Uses an **XGBoost classification pipeline** to estimate recovery probability.
+3. Passes that context to an **AI agent**.
+4. Lets the agent request controlled application tools.
+5. Applies business rules before actions are executed.
+6. Records recovery actions in SQLite for an auditable workflow.
+
+> **Core idea:** The ML model predicts *what is likely to happen*. The agent decides *what to do about it*.
+
+---
+
+## 🎯 The Problem
+
+Failed payments create revenue leakage for subscription and payment businesses.
 
 A recovery system needs to answer:
 
@@ -18,52 +50,88 @@ A recovery system needs to answer:
 - When should the case be escalated?
 - How should every action be recorded?
 
-RecoverAI automates this workflow.
+RecoverAI turns those questions into an automated, tool-driven workflow.
 
-## 💡 Solution
+---
 
-RecoverAI combines:
-
-1. **Machine Learning** — predicts payment recovery probability.
-2. **AI Agent** — investigates payment and customer context.
-3. **Tool Calling** — lets the agent interact with controlled application tools.
-4. **SQLite** — stores customers, payments, retries, notifications, and audit logs.
-5. **FastAPI** — exposes prediction and agent APIs.
-6. **Streamlit** — provides an interactive dashboard.
-
-## 🏗️ Architecture
+## 🧠 How It Works
 
 ```text
-                         ┌──────────────────┐
-                         │    Streamlit     │
-                         │    Dashboard     │
-                         └────────┬─────────┘
-                                  │
-                                  ▼
-                         ┌──────────────────┐
-                         │     FastAPI      │
-                         │       API        │
-                         └────────┬─────────┘
-                                  │
-                    ┌─────────────┴─────────────┐
-                    │                           │
-                    ▼                           ▼
-             ┌──────────────┐          ┌────────────────┐
-             │  XGBoost ML  │          │  OpenAI Agent  │
-             │    Model     │          │                │
-             └──────┬───────┘          └───────┬────────┘
-                    │                          │
-                    │                   ┌──────┴───────┐
-                    │                   │    Tools     │
-                    │                   └──────┬───────┘
-                    │                          │
-                    └────────────┬─────────────┘
-                                 ▼
-                         ┌──────────────────┐
-                         │      SQLite      │
-                         │     Database     │
-                         └──────────────────┘
+                    FAILED PAYMENT
+                          │
+                          ▼
+                 ┌─────────────────┐
+                 │ Payment +       │
+                 │ Customer Data   │
+                 └────────┬────────┘
+                          │
+                          ▼
+                 ┌─────────────────┐
+                 │  XGBoost Model  │
+                 │ Recovery        │
+                 │ Probability     │
+                 └────────┬────────┘
+                          │
+                          ▼
+                 ┌─────────────────┐
+                 │    AI Agent     │
+                 │ Investigate +   │
+                 │ Decide          │
+                 └────────┬────────┘
+                          │
+                          ▼
+                 ┌─────────────────┐
+                 │ Policy /        │
+                 │ Guardrails      │
+                 └────────┬────────┘
+                          │
+                ┌─────────┼─────────┐
+                ▼         ▼         ▼
+             Retry    Notify    Escalate
+                │         │         │
+                └─────────┼─────────┘
+                          ▼
+                 ┌─────────────────┐
+                 │ SQLite + Audit  │
+                 │ Trail           │
+                 └─────────────────┘
 ```
+
+### System Architecture
+
+```text
+┌──────────────────┐
+│    Streamlit     │
+│    Dashboard     │
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│     FastAPI      │
+│       API        │
+└────────┬─────────┘
+         │
+    ┌────┴───────────────────┐
+    │                        │
+    ▼                        ▼
+┌──────────────┐       ┌────────────────┐
+│ XGBoost ML   │       │  OpenAI Agent  │
+│ Model        │       │                │
+└──────┬───────┘       └───────┬────────┘
+       │                       │
+       │                 ┌─────▼─────┐
+       │                 │   Tools   │
+       │                 └─────┬─────┘
+       │                       │
+       └───────────┬───────────┘
+                   ▼
+          ┌──────────────────┐
+          │      SQLite      │
+          │     Database     │
+          └──────────────────┘
+```
+
+---
 
 ## 🤖 Agent Workflow
 
@@ -87,20 +155,38 @@ Recovery Probability
     ▼
 Policy / Agent Decision
     │
-    ├── schedule_retry()
+    ├──► schedule_retry()
     │
-    ├── send_notification()
+    ├──► send_notification()
     │
-    ├── escalate_case()
+    ├──► escalate_case()
     │
-    └── log_action()
+    └──► log_action()
 ```
 
-The LLM does not directly manipulate the database. It requests controlled tools, which execute application logic and persist the resulting actions.
+The LLM does **not** directly manipulate the database.
 
-## 🧠 Machine Learning
+Instead:
 
-RecoverAI uses an XGBoost classification pipeline for recovery prediction.
+```text
+LLM
+ ↓
+Tool Request
+ ↓
+Policy Validation
+ ↓
+Application Tool
+ ↓
+SQLite
+```
+
+This separates reasoning from application-side execution and provides a place to enforce business rules.
+
+---
+
+## 📊 Machine Learning
+
+RecoverAI uses an **XGBoost classification pipeline** for recovery prediction.
 
 ### Features
 
@@ -131,52 +217,81 @@ Prediction:           1
 Recovery Level:       medium_recovery
 ```
 
-## 📊 Model Performance
+---
+
+## 📈 Model Performance
 
 Current evaluation:
 
 | Metric | Score |
-|---|---:|
-| Accuracy | 69.50% |
-| Precision | 55.26% |
-| Recall | 35.32% |
-| F1 Score | 43.10% |
-| ROC-AUC | 70.59% |
-| PR-AUC | 51.65% |
+|:---|---:|
+| Accuracy | **69.50%** |
+| Precision | **55.26%** |
+| Recall | **35.32%** |
+| F1 Score | **43.10%** |
+| ROC-AUC | **70.59%** |
+| PR-AUC | **51.65%** |
 
-Accuracy is not treated as the only metric because recovery prediction is a business decision problem involving class imbalance and different costs for false positives and false negatives.
+> Accuracy is not treated as the only metric because recovery prediction is a business decision problem involving class imbalance and different costs for false positives and false negatives.
 
-## 🛠️ Tech Stack
+---
 
-### Backend
-- Python
-- FastAPI
-- Pydantic
-- SQLite
+## 💳 Example Recovery Flow
 
-### Machine Learning
-- Scikit-learn
-- XGBoost
-- Pandas
-- NumPy
-- Joblib
+### Payment
 
-### AI
-- OpenAI API
-- OpenAI Responses API
-- Function/tool calling
+```text
+Payment ID: PAY_001
+Customer:   Rahul
+Amount:     ₹1,999
+Status:     failed
+Failure:    insufficient_funds
+```
 
-### Frontend
-- Streamlit
+### Customer History
 
-### Development
-- Git
-- GitHub
-- Python virtual environment
+```text
+Tenure:              24 months
+Successful payments: 23
+Failed payments:     1
+Lifetime value:      ₹15,000
+```
 
-## 🔧 Agent Tools
+### Model
 
-The AI agent can use:
+```text
+Recovery probability: 57.76%
+Recovery level:       medium_recovery
+```
+
+### Agent Actions
+
+```text
+1. Schedule retry in 24 hours
+2. Notify customer
+3. Log recovery action
+```
+
+### Result
+
+```text
+Recovery decision:
+Retry + customer notification
+
+Retry:
+24 hours
+
+Audit:
+Action recorded in SQLite
+```
+
+---
+
+## 🛡️ Safety & Guardrails
+
+RecoverAI uses a controlled tool-based architecture.
+
+The agent can request:
 
 ```text
 get_payment()
@@ -188,105 +303,17 @@ escalate_case()
 log_action()
 ```
 
-These tools allow the agent to perform controlled application actions instead of only generating text.
+The important design principle is:
 
-## 🗄️ Database
+> **The model can request an action, but application logic controls how that action is executed.**
 
-RecoverAI uses SQLite to maintain application state.
+This creates a clear boundary between AI reasoning and business-side execution.
 
-The database stores information about:
+---
 
-- Customers
-- Payments
-- Retry attempts
-- Notifications
-- Recovery actions
+## 🖥️ Dashboard
 
-Recovery actions are linked to the relevant payment and customer, creating an auditable workflow.
-
-## 🛡️ Safety & Guardrails
-
-RecoverAI uses a controlled tool-based architecture:
-
-```text
-LLM
- ↓
-Tool request
- ↓
-Policy validation
- ↓
-Application tool
- ↓
-SQLite
-```
-
-This keeps the model separate from direct database operations and provides a place to enforce business rules before actions are executed.
-
-## 🚀 Running Locally
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/debugkrishna/recover-ai.git
-cd recover-ai
-```
-
-### 2. Create a virtual environment
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
-
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Configure environment variables
-
-Create a `.env` file in the project root:
-
-```env
-OPENAI_API_KEY=your_api_key_here
-```
-
-Never commit `.env` or expose your API key.
-
-## ▶️ Start FastAPI
-
-From the project root:
-
-```bash
-uvicorn app.main:app --reload
-```
-
-API:
-
-```text
-http://127.0.0.1:8000
-```
-
-Swagger documentation:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-## ▶️ Start Streamlit
-
-In another terminal:
-
-```bash
-PYTHONPATH=. streamlit run ui/app.py
-```
-
-Enter a payment ID such as:
-
-```text
-PAY_001
-```
+RecoverAI includes a Streamlit dashboard for interacting with the recovery system.
 
 The dashboard provides:
 
@@ -297,7 +324,41 @@ The dashboard provides:
 - Recovery audit trail
 - AI recovery workflow
 
-## 🔌 API Endpoints
+### Add your screenshots here
+
+Once you have the final UI screenshots, place them in the repository and replace these placeholders:
+
+```text
+docs/
+├── dashboard.png
+├── prediction.png
+└── agent-workflow.png
+```
+
+Then add:
+
+```markdown
+![RecoverAI Dashboard](docs/dashboard.png)
+```
+
+A short GIF showing the complete workflow would make the repository even stronger.
+
+---
+
+## 🧩 Tech Stack
+
+| Layer | Technologies |
+|:---|:---|
+| **Frontend** | Streamlit |
+| **Backend** | Python, FastAPI, Pydantic |
+| **Machine Learning** | Scikit-learn, XGBoost, Pandas, NumPy, Joblib |
+| **AI** | OpenAI API, OpenAI Responses API, Function/Tool Calling |
+| **Database** | SQLite |
+| **Development** | Git, GitHub, Python virtual environment |
+
+---
+
+## 🔌 API
 
 ### Health Check
 
@@ -327,7 +388,7 @@ Request:
 }
 ```
 
-Example response:
+Response:
 
 ```json
 {
@@ -354,53 +415,95 @@ Request:
 
 The agent investigates the payment, evaluates recovery likelihood, chooses recovery actions, executes approved tools, and returns a recovery plan.
 
-## 💳 Example Recovery Flow
+---
 
-Example payment:
+## ⚡ Run Locally
 
-```text
-Payment ID: PAY_001
-Customer: Rahul
-Amount: ₹1,999
-Status: failed
-Failure: insufficient_funds
+### 1. Clone
+
+```bash
+git clone https://github.com/debugkrishna/recover-ai.git
+cd recover-ai
 ```
 
-Customer history:
+### 2. Create a virtual environment
 
-```text
-Tenure: 24 months
-Successful payments: 23
-Failed payments: 1
-Lifetime value: ₹15,000
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
-Model result:
+### 3. Install dependencies
 
-```text
-Recovery probability: 57.76%
+```bash
+pip install -r requirements.txt
 ```
 
-Agent actions:
+### 4. Configure environment variables
 
-```text
-1. Schedule retry in 24 hours
-2. Notify customer
-3. Log recovery action
+Create `.env` in the project root:
+
+```env
+OPENAI_API_KEY=your_api_key_here
 ```
 
-Example final outcome:
+**Never commit `.env` or expose your API key.**
+
+### 5. Start FastAPI
+
+```bash
+uvicorn app.main:app --reload
+```
+
+API:
 
 ```text
-Recovery decision:
-Retry + customer notification
-
-Retry:
-24 hours
-
-Audit:
-Action recorded in SQLite
+http://127.0.0.1:8000
 ```
+
+Swagger:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+### 6. Start Streamlit
+
+In another terminal:
+
+```bash
+PYTHONPATH=. streamlit run ui/app.py
+```
+
+Enter a payment ID such as:
+
+```text
+PAY_001
+```
+
+---
+
+## 🧪 Testing
+
+### API health
+
+```bash
+curl http://127.0.0.1:8000/health
+```
+
+### ML prediction
+
+```bash
+curl -X POST http://127.0.0.1:8000/predict-recovery -H "Content-Type: application/json" -d '{"payment_id":"PAY_001"}'
+```
+
+### Agent
+
+```bash
+python -m agent.agent
+```
+
+---
 
 ## 📁 Project Structure
 
@@ -436,29 +539,21 @@ RecoverAI/
 └── README.md
 ```
 
-## 🧪 Testing the System
+---
 
-### Test the API health endpoint
+## 🗄️ Database
 
-```bash
-curl http://127.0.0.1:8000/health
-```
+SQLite maintains application state for:
 
-### Test ML prediction
+- Customers
+- Payments
+- Retry attempts
+- Notifications
+- Recovery actions
 
-```bash
-curl -X POST http://127.0.0.1:8000/predict-recovery \
--H "Content-Type: application/json" \
--d '{"payment_id":"PAY_001"}'
-```
+Recovery actions are linked to the relevant payment and customer, creating an auditable workflow.
 
-### Run the agent
-
-```bash
-python -m agent.agent
-```
-
-The agent should investigate the payment, call the appropriate tools, and return a recovery plan.
+---
 
 ## 🔮 Future Improvements
 
@@ -476,6 +571,8 @@ The agent should investigate the payment, call the appropriate tools, and return
 - Recovery revenue analytics
 - Better temporal features from real payment history
 - Automated evaluation and regression tests
+
+---
 
 ## 🎯 Why RecoverAI?
 
@@ -501,18 +598,21 @@ Action
 Audit Trail
 ```
 
-The project focuses on a working AI system rather than an isolated ML model.
+The project focuses on a **working AI system rather than an isolated ML model**.
 
 It demonstrates how a predictive model can be embedded inside an agentic workflow that takes controlled, auditable business actions.
 
+---
+
 ## 👨‍💻 Author
 
-**Krishna Arun Magotra**
+### Krishna Arun Magotra
 
-Information Technology  
-NIT Srinagar
+**Information Technology — NIT Srinagar**
 
-GitHub: https://github.com/debugkrishna
+[GitHub](https://github.com/debugkrishna)
+
+---
 
 ## 📌 Project Status
 
@@ -532,4 +632,14 @@ GitHub: https://github.com/debugkrishna
 ✅ GitHub documentation
 ```
 
-More production-oriented features are planned.
+**More production-oriented features are planned.**
+
+---
+
+<div align="center">
+
+### Built to explore AI-powered revenue recovery.
+
+⭐ If you find RecoverAI interesting, consider starring the repository.
+
+</div>
