@@ -1,8 +1,12 @@
 from fastapi import FastAPI
-
-from app.schemas import PaymentData
+from agent.agent import run_agent
+from app.schemas import PaymentRequest
 from ml.predict import predict_recovery
-
+from agent.tools import (
+    get_payment,
+    get_customer,
+    predict_customer_recovery,
+)
 
 app = FastAPI(
     title="RecoverAI",
@@ -26,10 +30,25 @@ def health():
 
 
 @app.post("/predict-recovery")
-def predict(payment: PaymentData):
+def predict(payment: PaymentRequest):
 
-    result = predict_recovery(
-        payment.model_dump()
+    payment_data = get_payment(
+        payment.payment_id
+    )
+
+    if "error" in payment_data:
+        return payment_data
+
+    customer_data = get_customer(
+        payment_data["customer_id"]
+    )
+
+    if "error" in customer_data:
+        return customer_data
+
+    result = predict_customer_recovery(
+        payment_data,
+        customer_data
     )
 
     probability = result["recovery_probability"]
@@ -42,9 +61,31 @@ def predict(payment: PaymentData):
         risk_level = "low_recovery"
 
     return {
+        "payment_id": payment.payment_id,
         "recovery_probability": probability,
         "recovery_prediction": result[
             "recovered_prediction"
         ],
         "recovery_level": risk_level,
+    }
+
+
+@app.post("/agent-recovery")
+def agent_recovery(payment: PaymentRequest):
+
+    result = run_agent(
+        f"""
+        Analyze the failed payment {payment.payment_id}.
+
+        Retrieve the payment and customer information,
+        calculate the recovery probability using the ML model,
+        choose an appropriate recovery action,
+        execute the required tools,
+        and provide a concise recovery plan.
+        """
+    )
+
+    return {
+        "payment_id": payment.payment_id,
+        "agent_response": result,
     }
