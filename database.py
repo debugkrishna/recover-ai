@@ -120,7 +120,6 @@ if __name__ == "__main__":
     print("RecoverAI database initialized and seeded.")
 
 
-
 def get_payment_history(payment_id: str):
 
     conn = get_connection()
@@ -129,6 +128,7 @@ def get_payment_history(payment_id: str):
     cursor.execute("""
         SELECT
             id,
+            payment_id,
             action,
             reason,
             timestamp
@@ -144,13 +144,13 @@ def get_payment_history(payment_id: str):
     return [
         {
             "id": row[0],
-            "action": row[1],
-            "reason": row[2],
-            "timestamp": row[3],
+            "payment_id": row[1],
+            "action": row[2],
+            "reason": row[3],
+            "timestamp": row[4],
         }
         for row in rows
     ]
-
 
 def get_payment_details(payment_id: str):
 
