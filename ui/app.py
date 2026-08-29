@@ -1,8 +1,11 @@
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import requests
 import streamlit as st
-
 from database import get_payment_history, get_payment_details
-
 
 # ============================================================
 # CONFIG
