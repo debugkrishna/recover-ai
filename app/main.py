@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from agent.agent import run_agent
 from app.schemas import PaymentRequest
 from ml.predict import predict_recovery
+from database import init_db, seed_data
 from agent.tools import (
     get_payment,
     get_customer,
@@ -13,6 +14,8 @@ app = FastAPI(
     description="AI-powered revenue recovery system",
     version="1.0.0",
 )
+init_db()
+seed_data()
 
 
 @app.get("/")
