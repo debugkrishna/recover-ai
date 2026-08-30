@@ -7,6 +7,15 @@ import requests
 import streamlit as st
 from database import get_payment_history, get_payment_details
 
+
+def api_error(response, label):
+    try:
+        detail = response.json().get("detail")
+    except Exception:
+        detail = response.text
+
+    return f"{label} error ({response.status_code}): {detail}"
+
 # ============================================================
 # CONFIG
 # ============================================================
