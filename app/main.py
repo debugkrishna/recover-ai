@@ -14,6 +14,7 @@ app = FastAPI(
     description="AI-powered revenue recovery system",
     version="1.0.0",
 )
+
 init_db()
 seed_data()
 
