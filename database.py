@@ -1,7 +1,8 @@
 import sqlite3
+from pathlib import Path
 
-DB_PATH = "recoverai.db"
-
+BASE_DIR = Path(__file__).resolve().parent
+DB_PATH = BASE_DIR / "recoverai.db"
 
 def get_connection():
     return sqlite3.connect(DB_PATH)
@@ -120,7 +121,7 @@ seed_data()
 
 if __name__ == "__main__":
     print("RecoverAI database initialized and seeded.")
-    
+
 
 def get_payment_history(payment_id: str):
 
