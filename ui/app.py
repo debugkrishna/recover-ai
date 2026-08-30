@@ -20,7 +20,7 @@ def api_error(response, label):
 # CONFIG
 # ============================================================
 
-API_BASE = "https://recover-ai-w2mo.onrender.com"
+API_BASE = "https://recover-ai-wi25.onrender.com"
 
 st.set_page_config(
     page_title="RecoverAI | Revenue Recovery",
