@@ -114,12 +114,13 @@ def seed_data():
     conn.commit()
     conn.close()
 
-    
+
 init_db()
 seed_data()
 
 if __name__ == "__main__":
     print("RecoverAI database initialized and seeded.")
+    
 
 def get_payment_history(payment_id: str):
 
