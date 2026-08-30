@@ -5,7 +5,12 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import requests
 import streamlit as st
-from database import get_payment_history, get_payment_details
+from database import (
+    init_db,
+    seed_data,
+    get_payment_history,
+    get_payment_details,
+)
 
 
 def api_error(response, label):
@@ -21,6 +26,8 @@ def api_error(response, label):
 # ============================================================
 
 API_BASE = "https://recover-ai-wi25.onrender.com"
+init_db()
+seed_data()
 
 st.set_page_config(
     page_title="RecoverAI | Revenue Recovery",
