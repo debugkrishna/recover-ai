@@ -11,7 +11,7 @@ from database import get_payment_history, get_payment_details
 # CONFIG
 # ============================================================
 
-API_BASE = "http://127.0.0.1:8000"
+API_BASE = "https://recover-ai-w2mo.onrender.com"
 
 st.set_page_config(
     page_title="RecoverAI | Revenue Recovery",
